@@ -1,0 +1,10 @@
+Z:\edu\crm\DEV\Dynamics365\Training.Plugins\bin\Debug\Training.Plugins.dll
+Z:\edu\crm\DEV\Dynamics365\Training.Plugins\bin\Debug\Training.Plugins.pdb
+Z:\edu\crm\DEV\Dynamics365\Training.Plugins\bin\Debug\Microsoft.Crm.Sdk.Proxy.dll
+Z:\edu\crm\DEV\Dynamics365\Training.Plugins\bin\Debug\Microsoft.Xrm.Sdk.dll
+Z:\edu\crm\DEV\Dynamics365\Training.Plugins\bin\Debug\Microsoft.Crm.Sdk.Proxy.xml
+Z:\edu\crm\DEV\Dynamics365\Training.Plugins\bin\Debug\Microsoft.Xrm.Sdk.xml
+Z:\edu\crm\DEV\Dynamics365\Training.Plugins\obj\Debug\Training.Plugins.csprojAssemblyReference.cache
+Z:\edu\crm\DEV\Dynamics365\Training.Plugins\obj\Debug\Training.Plugins.csproj.CopyComplete
+Z:\edu\crm\DEV\Dynamics365\Training.Plugins\obj\Debug\Training.Plugins.dll
+Z:\edu\crm\DEV\Dynamics365\Training.Plugins\obj\Debug\Training.Plugins.pdb
