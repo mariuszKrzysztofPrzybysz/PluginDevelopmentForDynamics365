@@ -11,7 +11,7 @@ namespace Training.Plugins
                 serviceProvider.GetService(typeof(IPluginExecutionContext));
 
             var entity = (Entity)context.InputParameters["Target"];
-            var name = (string)entity["name"];
+            var name = (string)entity["ita_name"];
             if ("Test".Equals(name))
             {
                 throw new InvalidPluginExecutionException("Cannot use this name");
