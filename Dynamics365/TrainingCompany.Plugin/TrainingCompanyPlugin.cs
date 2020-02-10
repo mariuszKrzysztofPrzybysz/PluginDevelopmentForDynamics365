@@ -53,30 +53,17 @@ namespace TrainingCompany.Plugin
 
         private EntityCollection RetrieveContacts(ITracingService tracingService, IOrganizationService organizationService, Guid companyId, int page, string pagingCookie)
         {
-            if (!string.IsNullOrWhiteSpace(pagingCookie))
-            {
-                pagingCookie = pagingCookie.Replace("\"", "'").Replace(">", "&gt;").Replace("<", "&lt;");
-            }
-            var fetchXml =
-                @"<fetch version=""1.0""
-                    count=""5""
-                    page=""{1}""
-                    paging-cookie=""{2}""
-                    returntotalrecordcount=""true""
-                    output-format=""xml-platform""
-                    mapping=""logical""
-                    distinct=""false"">
-                    <entity name=""ita_trainingcontact"">
-                        <attribute name=""ita_trainingcontactid"" />
-                        <filter type=""and"">
-                        <condition attribute=""ita_company"" operator=""eq"" value=""{0}"" />
-                        </filter>
-                    </entity>
-                </fetch>";
+            var qe = new QueryExpression("ita_trainingcontact");
+            qe.Criteria.AddCondition(new ConditionExpression("ita_company", ConditionOperator.Equal, companyId));
 
-            fetchXml = string.Format(fetchXml, companyId, page, pagingCookie);
-            tracingService.Trace(fetchXml);
-            var qe = new FetchExpression(fetchXml);
+            qe.PageInfo = new PagingInfo
+            {
+                Count = 5,
+                PageNumber = page,
+                PagingCookie = pagingCookie,
+                ReturnTotalRecordCount = true
+            };
+
             var result = organizationService.RetrieveMultiple(qe);
             return result;
         }
