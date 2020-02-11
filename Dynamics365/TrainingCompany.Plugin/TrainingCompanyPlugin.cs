@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using System;
+using System.Linq;
+using Training.Core.Extensions;
 
 namespace TrainingCompany.Plugin
 {
@@ -53,7 +55,17 @@ namespace TrainingCompany.Plugin
 
         private void ExecuteCreditLimitValidation(IPluginExecutionContext context, IOrganizationService service, Entity entity)
         {
-
+            var preImage = context.PreEntityImages.Contains("PreImage") ? context.PreEntityImages["PreImage"] : null;
+            var creditLimit = entity.GetAttribute<Money>(preImage, "ita_creditlimit");
+            var creditRating = entity.GetAttribute<OptionSetValue>(preImage, "ita_creditrating");
+            if (creditLimit != null && creditRating != null)
+            {
+                var maxLimit = GetCreditLimit(service, creditRating);
+                if (maxLimit != null && maxLimit.Value < creditRating.Value)
+                {
+                    throw new InvalidPluginExecutionException("Cannot exceed maximum credit limit");
+                }
+            }
         }
 
         private void ExecutePriorityUpdate(IPluginExecutionContext context, IOrganizationService service, Entity entity)
@@ -83,6 +95,40 @@ namespace TrainingCompany.Plugin
                 pageNumber++;
             }
             while (result.MoreRecords);
+        }
+
+        private Money GetCreditLimit(IOrganizationService service, OptionSetValue creditLimit)
+        {
+            var fetchXml =
+                    @"<fetch version=""1.0"" output-format=""xml-platform"" mapping=""logical"" distinct=""false"">
+                        <entity name=""ita_creditlimit"">
+                            <attribute name=""ita_creditlimitid"" />
+                            <attribute name=""ita_creditlimit"" />
+                            <order attribute=""ita_creditlimit"" descending=""false"" />
+                            <filter type=""and"">
+                                <condition attribute=""ita_creditrating"" operator=""eq"" value=""{0}"" />
+                            </filter>
+                            <link-entity name=""ita_trainingconfiguration"" from=""ita_trainingconfigurationid"" to=""ita_configuration"" link-type=""inner"" alias=""ac"">
+                                <filter type=""and"">
+                                    <condition attribute=""statecode"" operator=""eq"" value=""{0}"" />
+                                </filter>
+                            </link-entity>
+                        </entity>
+                    </fetch>";
+
+            fetchXml = string.Format(fetchXml, creditLimit.Value);
+            var qe = new FetchExpression(fetchXml);
+
+            var result = service.RetrieveMultiple(qe)
+                .Entities
+                .FirstOrDefault();
+
+            if (result is null)
+            {
+                return null;
+            }
+
+            return (Money)result["ita_creditlimit"];
         }
     }
 }
