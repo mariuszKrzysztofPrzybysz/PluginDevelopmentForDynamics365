@@ -61,18 +61,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="TrainingCompanyPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="TrainingCompanyPlugin.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Training.Core\Training.Core.csproj">
-      <Project>{d55c2e1c-4a3b-4c72-ae61-4916419ba823}</Project>
-      <Name>Training.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

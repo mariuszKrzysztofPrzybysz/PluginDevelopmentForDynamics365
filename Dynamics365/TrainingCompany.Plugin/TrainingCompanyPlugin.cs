@@ -2,7 +2,7 @@
 using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Linq;
-using Training.Core.Extensions;
+using TrainingCompany.Plugin.Extensions;
 
 namespace TrainingCompany.Plugin
 {
@@ -110,7 +110,7 @@ namespace TrainingCompany.Plugin
                             </filter>
                             <link-entity name=""ita_trainingconfiguration"" from=""ita_trainingconfigurationid"" to=""ita_configuration"" link-type=""inner"" alias=""ac"">
                                 <filter type=""and"">
-                                    <condition attribute=""statecode"" operator=""eq"" value=""{0}"" />
+                                    <condition attribute=""statecode"" operator=""eq"" value=""0"" />
                                 </filter>
                             </link-entity>
                         </entity>
